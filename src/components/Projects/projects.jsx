@@ -150,7 +150,7 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
                     }
 
                     {!authenticated && projects.length === 0 &&
-                        <div className="item">
+                        <div className="item no-projects">
                             <div className="top-part">
                                 <h3>No Projects Yet</h3>
                             </div>
