@@ -55,6 +55,10 @@ const Presentation = ({authenticated, userInfo}) => {
         let imgFileUploaded = null;
 
         if (cvFile.file){
+            if (userInfo.cv){ // first we delete from the db and firebase the old cv
+                await deleteFileByURL(userInfo.cv);
+                updateUserObject.cv = "";
+            }
             cvFileUploaded = await upload(cvFile.file, (progress) => {
                 // here we can use the progress if we want
             })
