@@ -1,0 +1,429 @@
+.experience{
+    width: 1150px;
+    margin: 0 auto 50px;
+    
+    h1{
+        font-size: 50px;
+        text-align: center;
+        margin-top: 70px;
+        margin-bottom: 40px;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: var(--headingColor);
+    }
+
+    .btn{
+        display: block;
+        margin: 0 auto;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        padding: 8px 16px;
+        background-color: var(--buttonColor);
+        color: var(--mainLinkColor);
+        transform: translateY(0px);
+        transition: var(--transition);
+        box-shadow: var(--box-shadow);
+        font-size: 18px;
+
+        &:hover{
+             background-color: var(--buttonColorHover);
+             transform: translateY(-2px);
+        }
+    }
+
+    .item{
+        background-color: var(--mainBorderColor);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: var(--box-shadow);
+        margin-top: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+
+        .delete-experience{
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            cursor: pointer;
+            background-color: transparent;
+            border-radius: 50%;
+            border: 2px solid black;
+            width: 40px;
+            height: 40px;
+            transform: translateY(0px);
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+
+            &:hover{
+                background-color: var(--buttonColorHover);
+                transform: translateY(-2px);
+           }
+        }
+
+        .total-info{
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            
+            .photo-div{
+                overflow: hidden;
+                border-radius: 10px;
+
+                img{
+                    width: 250px;
+                    height: 200px;
+                    vertical-align: middle;
+                    border-radius: 10px;
+                    transition: transform 0.4s ease-in-out;
+    
+                    &:hover{
+                        transform: scale(1.1);
+                    }
+
+                    &.uploaded-img{
+                        cursor: pointer;
+                    }
+                }
+
+                input{
+                    display: none;
+                }
+            }
+
+            .item-info{
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                max-width: 600px;
+
+                input{
+                    background-color: var(--buttonColor);
+                    border-radius: 10px;
+                    border: 1px solid var(--buttonColorHover);
+                    padding: 0 15px;
+                    letter-spacing: 1px;
+                    box-shadow: var(--input-shadow);
+                    transition: var(--transition);
+
+                    &:focus{
+                        border: 1px solid var(--mainLinkColor);
+                        outline: none;
+                        box-shadow: none;
+                    }
+                }
+
+                .working-period{
+                    height: 40px;
+                    font-size: 16px;
+                    width: 250px;
+                }
+
+                .timestamp{
+                    background-color: var(--buttonColor);
+                    padding: 5px 10px 6px;
+                    border-radius: 30px;
+                }
+
+                div{
+                    .working-place{
+                        height: 45px;
+                        font-size: 17px;
+                        width: 400px;
+                        margin-bottom: 10px;
+                    }
+
+                    h2{
+                        margin-bottom: 10px;
+                        font-size: 30px;
+                    }
+
+                    .work-position{
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+
+                        h3{
+                            font-size: 23px;
+                            margin-right: 10px;
+                        }
+    
+                        .small-info{
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            
+                           p{
+                                display: inline;
+                                background-color: var(--buttonColor);
+                                padding: 5px 10px 6px;
+                                border-radius: 30px;
+                           }  
+                        }
+                    }
+
+                    .work-position-upload{
+                        display: flex;
+                        flex-direction: column;
+
+                        .job-title{
+                            height: 42px;
+                            font-size: 17px;
+                            width: 350px;
+                            margin-bottom: 10px;
+                        }
+
+                        .job-radio-container{
+                            margin-top: 10px;
+
+                            p{
+                                margin-bottom: 5px;
+                            }
+
+                            .radio-div{
+                                display: flex;
+                                align-items: center;
+                                gap: 15px;
+
+                                .radio-inside{
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 4px;
+
+                                    input{
+                                        cursor: pointer;
+                                    }
+    
+                                    .radio-gaps{
+                                        cursor: pointer;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }   
+
+                .description-textarea{
+                    background-color: var(--buttonColor);
+                    width: 550px;
+                    height: 150px;
+                    min-height: 90px;
+                    resize: none;
+                    border-radius: 10px;
+                    border: 1px solid var(--buttonColorHover);
+                    padding: 8px 12px;
+                    letter-spacing: 1px;
+                    font-size: 16px;
+                    transition: var(--transition);
+                    box-shadow: var(--input-shadow);
+
+                    &:focus{
+                        border: 1px solid var(--mainLinkColor);
+                        outline: none;
+                        box-shadow: none;
+                    }
+                }
+
+                .webpage-link{
+                    height: 40px;
+                    font-size: 16px;
+                    width: 100%;
+                }
+
+                .description{
+                    width: 100%;
+                    font-size: 18px;
+                    overflow-wrap: break-word;
+                }
+            }
+        }
+
+        &:hover{
+            .total-info{  
+                .photo-div{
+                    img{ 
+                        transform: scale(1.1);
+                    }
+                }
+            }
+        }
+        
+        a{
+           width: 150px;
+           padding: 15px;
+           text-align: center;
+           border-radius: 10px;
+           background-color: var(--buttonColor);
+           color: var(--mainLinkColor);
+           font-size: 18px;
+           transform: translateY(0px);
+           transition: var(--transition);
+           box-shadow: var(--box-shadow);
+
+           &:hover{
+                background-color: var(--buttonColorHover);
+                transform: translateY(-5px);
+            }
+        }
+    }
+}
+
+@media(max-width: 1190px){
+    .experience{
+        width: 900px;
+
+        h1{
+            font-size: 40px;
+        }
+
+        .item{
+            .delete-experience{
+                top: 10px;
+                right: 10px; 
+            }
+
+            .total-info{
+                gap: 20px;
+ 
+                .photo-div{
+                    img{
+                        width: 200px;
+                        height: 150px;
+                    }
+                }
+                
+                .item-info{
+                    max-width: 400px; 
+
+                    div{
+                        h2{
+                            font-size: 27px;
+                        }
+    
+                        .work-position{
+                            gap: 10px;
+    
+                            h3{
+                                font-size: 20px;
+                                margin-right: 5px;
+                            }
+                        }
+                    }
+    
+                    .description{
+                        font-size: 17px;
+                    }
+                }
+            }
+            
+        }
+    }
+}
+
+@media(max-width: 930px){
+    .experience{
+        width: 550px;
+
+        .item{
+            flex-direction: column;
+            align-items: normal;
+    
+            .total-info{
+                flex-direction: column;
+                align-items: self-start;
+                gap: 30px;
+                margin-bottom: 20px;
+                width: 100%;
+                
+                .photo-div{
+                    img{
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+                
+                .item-info{
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 10px;
+
+                    div{
+                        .working-place{
+                            width: 100%;
+                        }
+
+                        .work-position-upload{
+                            display: flex;
+                            flex-direction: column;
+    
+                            .job-title{
+                                width: 100%;
+                            }
+                        }
+                    }  
+
+                    .description-textarea{
+                        width: 100%;
+                    }
+
+                    &.authenticated{
+                        width: 100%;
+                        margin: 0 auto;
+
+                        .working-period{
+                            width: 100%;
+                        }
+                        
+                        div{
+                            width: 100%;
+                        }
+
+                        .btn{
+                            margin-top: 10px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .item-buttons{
+            display: flex;
+            gap: 20px;
+        }
+    }
+}
+
+@media(max-width: 670px){
+    .experience{
+        width: 83%;
+ 
+        div{
+            .work-position{
+                flex-direction: column;
+                align-items: baseline !important;
+            }
+        }
+            
+        .description-textarea{
+            width: 100% !important;
+        }
+    }
+}
+
+@media(max-width: 370px){
+    .item-info{
+        &.authenticated{
+            .job-radio-container{
+                .radio-div{
+                    flex-direction: column;
+                    align-items: flex-start !important;
+
+                    
+                }
+            }
+        }
+    }
+}

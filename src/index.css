@@ -1,0 +1,63 @@
+:root{
+	--mainTextColor: #000;
+	--secondaryTextColor: rgb(51, 51, 51);
+	--mainLinkColor: #0da2b8;
+	--mainBorderColor: rgb(218, 218, 218);
+	--mainBgColor: rgb(249, 250, 251);
+  --buttonColor: #c9bfbf;
+  --buttonColorHover: #d3d3d3;
+  --headingColor: #333;
+  --hoveringCard: linear-gradient(135deg, #8f8c8c, #dadada);
+  --box-shadow: 1px 1px 5px 4px rgba(0, 0, 0, 0.295);
+  --submitBtn-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.295);
+  --input-shadow: 1px 4px 2px -3px rgba(112, 112, 112, 0.3) inset, -1px -3px 3px -2px rgba(0, 0, 0, 0.7) inset;
+  --transition: 0.5s;
+} 
+
+.dark-theme{
+	--mainTextColor: #fff;
+	--secondaryTextColor: #adb0b1;
+	--mainLinkColor: rgb(30, 190, 214);
+	--mainBorderColor: #2b3031;
+	--mainBgColor: #131415;
+  --buttonColor: #242525;
+  --buttonColorHover: #343636;
+  --headingColor: #b9b9b9;
+  --hoveringCard: linear-gradient(135deg, #242525, #646464);
+  --box-shadow: 1px 1px 5px 4px rgba(255, 255, 255, 0.192);
+  --submitBtn-shadow: 10px 10px 19px #1c1e22, -10px -10px 19px #262a2e;
+  --input-shadow: 1px 4px 2px -3px rgba(0, 0, 0, 0.7) inset, -1px -3px 3px -2px rgba(255, 255, 255, 0.2) inset;
+  --transition: 0.5s;
+} 
+
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0; 
+    color: var(--mainTextColor);
+    scroll-behavior: smooth;
+}
+
+body{
+    background-color: var(--mainBgColor);
+}
+
+.hide{
+  display: none;
+}
+
+p, span, li, label{
+	color: var(--secondaryTextColor);
+	font-size: 1rem;
+  font-family: 'Roboto Mono', monospace;
+}
+
+a{
+  text-decoration: none;
+  color: var(--mainTextColor);
+}
+
+h1, h2, h3, h4, h5, h6, strong{
+    font-family: 'Russo One', sans-serif;
+    font-weight: 500;
+}

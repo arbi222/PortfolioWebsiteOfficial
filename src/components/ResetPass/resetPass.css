@@ -1,0 +1,159 @@
+.reset-pass-container{
+    background-color: #131415;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.reset-pass-nav{
+    position: absolute;
+    z-index: 100;
+    top: 0;
+}
+
+.reset-pass-form{
+    margin-top: 40px;
+    border-radius: 15px;
+    padding: 40px 45px;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    box-shadow: 1px 1px 5px 4px rgba(255, 255, 255, 0.192);
+
+        h1{
+            margin-bottom: 30px;
+            text-align: center;
+            color: rgb(30, 190, 214);
+        }
+
+        div{
+            margin-bottom: 25px;
+
+            label{
+                display: inline-block;
+                margin-bottom: 10px;
+                color: rgb(30, 190, 214);
+                cursor: pointer;
+                font-size: 18px;
+            }
+
+            input{
+                background-color: #242525;
+                color: #fff;
+                height: 50px;
+                border-radius: 6px;
+                border: 1px solid #343636;
+                padding: 0 15px;
+                font-size: 16px;
+                letter-spacing: 1px;
+                width: 100%;
+                box-shadow: 1px 4px 2px -3px rgba(0, 0, 0, 0.7) inset, -1px -3px 3px -2px rgba(255, 255, 255, 0.2) inset;
+                transition: 0.5s;
+    
+                &:focus{
+                    border: 1px solid rgb(30, 190, 214);
+                    outline: none;
+                    box-shadow: none;
+                }
+            }
+        }
+
+        .save-pass-btn{
+            display: block;
+            margin: 25px auto 0;
+            width: 85%;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            background-color: rgb(30, 190, 214);
+            font-size: 16px;
+
+            &:hover{
+                background-color: rgba(10, 222, 255, 1);
+            }
+        }
+
+        &::before{
+            content: "";
+            position: absolute;
+            top: 38%;
+            left: -45%;
+            width: 900px;
+            height: 100px;
+            background-image: linear-gradient(180deg, rgb(30, 190, 214), rgb(30, 190, 214));
+            animation: rotateBorders 8s linear infinite;
+            transition: all 0.2s linear;
+            z-index: -2;
+        }
+
+        &::after{
+            content: "";
+            position: absolute;
+            background: #07182e;
+            inset: 4px;
+            border-radius: 15px;
+            z-index: -1;
+        }
+}
+
+@keyframes rotateBorders {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media(max-width: 768px){
+	.reset-pass-nav{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+@media(max-width: 515px){
+	.reset-pass-form{
+        padding: 10px 0px;
+       
+            h1{
+                font-size: 30px;
+            }
+    
+            div{
+                margin-bottom: 25px;
+                text-align: center;
+                
+                label{
+                    margin-bottom: 7px;
+                    font-size: 16px;
+                }
+    
+                input{
+                    height: 45px;
+                    width: 80%;
+                }
+            }
+    
+            .save-pass-btn{
+                margin: 25px auto 10px;
+                width: 65%;
+                height: 35px;
+                font-size: 15px;
+            }
+    
+            &::before{
+                top: 38%;
+                left: -70%;
+                height: 60px;
+            }
+    }
+}

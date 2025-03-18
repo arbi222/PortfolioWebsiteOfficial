@@ -1,0 +1,259 @@
+.presentation{
+    width: 100%;
+    height: 550px;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 50px;
+    position: relative;
+
+    .container{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 20px;
+
+        .info{
+            max-width: 550px;
+            min-width: 150px;
+            padding: 40px;
+            background-color: var(--mainBorderColor);
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+    
+            h1{
+                font-size: 50px;
+                margin-bottom: 20px;
+
+                span{
+                    font-size: 50px;
+                    color: var(--mainLinkColor);
+                    font-family: 'Russo One', sans-serif;
+                    font-weight: 500;
+                }
+            }
+
+            .textarea{
+                background-color: var(--buttonColor);
+                width: 450px;
+                min-height: 90px;
+                resize: none;
+                border-radius: 10px;
+                border: 1px solid var(--buttonColorHover);
+                padding: 8px 12px;
+                letter-spacing: 1px;
+                font-size: 16px;
+                transition: var(--transition);
+                box-shadow: var(--input-shadow);
+
+                &:focus{
+                    border: 1px solid var(--mainLinkColor);
+                    outline: none;
+                    box-shadow: none;
+                }
+            }
+    
+            p{
+                font-size: 20px;
+            }     
+        }
+    
+        .cv{
+            max-width: 550px;
+            min-width: 150px;
+            padding: 40px;
+            background-color: var(--mainBorderColor);
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+
+            .input-cv{
+                gap: 20px;
+
+                label{
+                    border: none;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    padding: 10px 20px;
+                    background-color: var(--buttonColor);
+                    color: var(--mainLinkColor);
+                    transform: translateY(0px);
+                    transition: var(--transition);
+                    box-shadow: var(--box-shadow);
+
+                    &:hover{
+                         background-color: var(--buttonColorHover);
+                         transform: translateY(-5px);
+                    }
+                }
+
+                input{
+                    display: none;
+                }
+            }
+
+            p{
+                font-size: 20px; 
+            }
+            
+            div{
+                display: flex;
+                justify-content: start;
+                align-items: center;
+                margin-top: 30px;
+                gap: 50px;
+    
+                a{
+                    text-align: center;
+                    width: 200px;
+                    padding: 15px;
+                    border-radius: 10px;
+                    border: none;
+                    cursor: pointer;
+                    transform: translateY(0px);
+                    color: var(--mainLinkColor);
+                    font-size: 18px;
+                    transition: var(--transition);
+                    background-color: var(--buttonColor);
+                    box-shadow: var(--box-shadow);
+
+                    &:hover{
+                        background-color: var(--buttonColorHover);
+                        transform: translateY(-5px);
+                    }
+                }
+            }
+        }
+    }
+
+    .img-section{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 550px;
+        min-width: 300px;
+        padding: 30px;
+        background-color: var(--mainBorderColor);
+        border-radius: 15px;
+        box-shadow: var(--box-shadow);
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .img-uploader{
+            margin-top: 25px;
+            margin-bottom: 10px;
+            text-align: center;
+
+            label{
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                padding: 10px 20px;
+                background-color: var(--buttonColor);
+                color: var(--mainLinkColor);
+                transition: var(--transition);
+                box-shadow: var(--box-shadow);
+
+                &:hover{
+                     background-color: var(--buttonColorHover);
+                }
+            }
+
+            input{
+                display: none;
+            }
+        }
+    }
+
+    .card{
+        transform: translateY(0px);
+        transition: var(--transition);
+
+        &:hover{
+            transform: translateY(-7px);
+        }
+    }
+
+    .save-btn{
+        position: absolute;
+        bottom: 5px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        padding: 8px 16px;
+        background-color: var(--buttonColor);
+        color: var(--mainLinkColor);
+        transform: translateY(0px);
+        transition: var(--transition);
+        box-shadow: var(--box-shadow);
+
+        &:hover{
+             background-color: var(--buttonColorHover);
+             transform: translateY(-2px);
+        }
+    }
+}
+
+@media(max-width: 930px){
+	.presentation{
+        flex-direction: column-reverse;
+        text-align: center;
+        align-items: center;
+        height: auto;
+        gap: 40px; 
+
+        .container, .img-section {
+            width: 100%; 
+            max-width: 550px;
+        }
+
+        .container{
+            .info{
+                .textarea{
+                    width: 100%;
+                }
+            }
+
+            .cv{
+                div{
+                    gap: 10px;
+        
+                    button{
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media(max-width: 600px){
+	.presentation{
+        .container{
+            .input-cv{
+                flex-direction: column;
+            }
+        }
+    }
+}
+
+@media(max-width: 487px){
+	.cv{
+        div{
+            flex-direction: column;
+            gap: 20px !important;
+
+            a{
+                width: 100% !important;
+                padding: 12px !important;
+                font-size: 16px !important;
+            }
+        }
+    }
+}
