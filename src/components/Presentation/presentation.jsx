@@ -104,7 +104,7 @@ const Presentation = ({authenticated, userInfo}) => {
                             <input type="file" id="cv" onChange={handleCV} accept=".pdf,.doc,.docx"/>
                             <p>
                                 {cvFile.url ? cvFile.url :
-                                userInfo.cv ? "1 file exists." :
+                                userInfo?.cv ? "1 file exists." :
                                  "No file uploaded."
                                 }
                             </p>
