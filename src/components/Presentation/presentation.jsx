@@ -124,7 +124,8 @@ const Presentation = ({authenticated, userInfo}) => {
             
             <div className="img-section card">
                 <img src={img.url ? img.url : 
-                    userInfo?.avatar && userInfo.avatar } alt="MERN Stack Developer" />
+                    userInfo?.avatar ? userInfo.avatar
+                    : "./defaultUser.png" } alt="MERN Stack Developer" />
                 {authenticated && 
                     <div className="img-uploader">
                         <label htmlFor="img">Upload your picture</label>
