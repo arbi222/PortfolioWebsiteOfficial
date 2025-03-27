@@ -115,7 +115,7 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
                             {authenticated && (
                               <button
                                 title="Delete Category"
-                                className={activeButton.categoryName === category?.categoryName ? "delete-btn" : "delete-btn hide"}
+                                className={activeButton?.categoryName === category?.categoryName ? "delete-btn" : "delete-btn hide"}
                                 onClick={() => deleteCategory(category?.categoryName)}
                               >
                                 <Delete style={{fill: "red"}}/>
