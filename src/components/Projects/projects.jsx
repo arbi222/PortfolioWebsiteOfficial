@@ -15,7 +15,9 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
         const getCategorys = async () => {
             const res = await axios.get(apiUrl + "/api/category/getCategorys");
             if (res.data.length > 0){
-                setCategories(res.data);
+                setCategories(res.data.sort((c1, c2) => {
+                    return new Date(c2.createdAt) - new Date(c1.createdAt)
+                }));
                 setActiveButton(res.data[0]);
             }
             else{
@@ -36,7 +38,7 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
         try{
             if (newCategory) {
                 const res = await axios.post(apiUrl + "/api/category/createCategory", {categoryName: newCategory.trim()});
-                setCategories([...categories, {categoryName: newCategory}]);
+                setCategories([{categoryName: newCategory}, ...categories]);
                 setNewCategory("");
                 toast.success(res.data);
             }
