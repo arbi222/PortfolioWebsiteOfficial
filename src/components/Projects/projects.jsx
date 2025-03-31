@@ -49,7 +49,9 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
     };
 
     const [projects, setProjects] = useState([]);
+    const [loader, setLoader] = useState(false);
     useEffect(() => {
+        setLoader(true);
         setProjects([]);
         const getProjects = async () => {
             if (activeButton?._id){
@@ -57,6 +59,7 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
                 setProjects(res.data.sort((p1, p2) => {
                     return new Date(p2.createdAt) - new Date(p1.createdAt)
                 }));
+                setLoader(false);
             }
         }
         getProjects();
@@ -151,7 +154,7 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
                         </div>
                     }
 
-                    {!authenticated && projects.length === 0 &&
+                    {!authenticated && projects.length === 0 && loader === false &&
                         <div className="item no-projects">
                             <div className="top-part">
                                 <h3>No Projects Yet</h3>
