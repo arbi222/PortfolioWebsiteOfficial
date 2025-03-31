@@ -149,6 +149,11 @@
             flex-wrap: wrap;
             gap: 30px;
 
+            .loader{
+                display: block;
+                margin: 30px auto;
+            }
+
             .item{
                 flex-basis: 30.33%;
                 height: 190px;

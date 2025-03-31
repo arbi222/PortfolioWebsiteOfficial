@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./projects.css";
 import { toast } from "react-toastify";
 import { Delete } from "@mui/icons-material";
+import { MoonLoader } from "react-spinners";
 import axios from "axios";
 import deleteFileByURL from "../../firebaseLib/deleteFile";
 
@@ -154,37 +155,42 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
                         </div>
                     }
 
-                    {!authenticated && projects.length === 0 && loader === false &&
+                    {loader && !authenticated ? (
+                        <div className="loader">
+                            <MoonLoader color="#1ebed6" size={90} />
+                        </div>
+                    ) : projects.length === 0 && !authenticated ? (
                         <div className="item no-projects">
                             <div className="top-part">
                                 <h3>No Projects Yet</h3>
                             </div>
                         </div>
-                    }
-                    
-                    {projects?.map((project, index) => (
-                        <div className="item" 
-                            data-aos="zoom-in"
-                            data-aos-delay={index * 200} 
-                            data-aos-duration="800" key={project._id}>
-                            {authenticated &&
-                                <div className="delete-project-div">
-                                    <button onClick={() => deleteProject(project)} title="Delete Project"><Delete style={{fill: "red", marginTop: "3px"}}/></button>
+                    ) : (
+                        projects?.map((project, index) => (
+                            <div
+                                className="item"
+                                data-aos="zoom-in"
+                                data-aos-delay={index * 200}
+                                data-aos-duration="800"
+                                key={project._id}
+                            >
+                                {authenticated && (
+                                    <div className="delete-project-div">
+                                        <button onClick={() => deleteProject(project)} title="Delete Project">
+                                            <Delete style={{ fill: "red", marginTop: "3px" }} />
+                                        </button>
+                                    </div>
+                                )}
+                                <div className="top-part" onClick={() => { setOpenItem(activeButton); setSingleItem(project); }}>
+                                    {project.image ? <img src={project.image} /> : <h3>Open Project</h3>}
                                 </div>
-                            }
-                            <div className="top-part">
-                                {project.image ? 
-                                    <img src={project.image} onClick={() => {setOpenItem(activeButton); setSingleItem(project)}} />
-                                    :
-                                    <h3 onClick={() => {setOpenItem(activeButton); setSingleItem(project)}}>Open Project</h3>
-                                }
+                                <div className="bottom-part">
+                                    <div className="separator"></div>
+                                    <h2>{project.projectName}</h2>
+                                </div>
                             </div>
-                            <div className="bottom-part">
-                                <div className="separator"></div>
-                                <h2 onClick={() => {setOpenItem(activeButton); setSingleItem(project)}}>{project.projectName}</h2>
-                            </div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </div>
             </div>
             
