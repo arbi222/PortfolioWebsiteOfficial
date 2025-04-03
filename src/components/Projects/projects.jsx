@@ -186,7 +186,7 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
                                 </div>
                                 <div className="bottom-part">
                                     <div className="separator"></div>
-                                    <h2>{project.projectName}</h2>
+                                    <h2 onClick={() => { setOpenItem(activeButton); setSingleItem(project); }}>{project.projectName}</h2>
                                 </div>
                             </div>
                         ))
