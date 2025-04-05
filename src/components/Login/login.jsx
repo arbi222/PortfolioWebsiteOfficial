@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 
 const Login = () => {
 
+    const apiUrl = import.meta.env.VITE_API_KEY;
     const email = useRef();
     const password = useRef();
     const {isFetching, dispatch} = useContext(AuthContext);
@@ -23,7 +24,7 @@ const Login = () => {
         e.preventDefault();
 
         try{
-            const res = await axios.post("/api/reset/forgotPassword", {email: email.current.value});
+            const res = await axios.post(apiUrl + "/api/reset/forgotPassword", {email: email.current.value});
             toast.success(res.data);
             setForgotPass(false);
         }
