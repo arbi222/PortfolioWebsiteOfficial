@@ -13,6 +13,7 @@ import Item from "../Projects/Item/item";
 import axios from "axios";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { RiseLoader } from "react-spinners";
 
 const Home = ({authenticated, dispatch}) => {
 
@@ -52,77 +53,86 @@ const Home = ({authenticated, dispatch}) => {
 
 
     const [userInfo, setUserInfo] = useState(null);
+    const [loader, setLoader] = useState(true);
     useEffect(() => {
+      setLoader(true);
       const getUser = async () => {
         const res = await axios.get(apiUrl + "/api/users/getUser");
         setUserInfo(res.data[0]);
+        setLoader(false);
       }
       getUser();
     }, [])
 
     return (
       <>
-        <div className="home-page">
-          <Navbar authenticated={authenticated} dispatch={dispatch} />
-          <BackToTopBtn />
+        {loader ? 
+            <div className="home-loader">
+              <RiseLoader color="#0da2b8" size={35} speedMultiplier={1.3}/>
+            </div>
+          :
+          <div className="home-page">
+            <Navbar authenticated={authenticated} dispatch={dispatch} />
+            <BackToTopBtn />
 
-          <div data-aos="fade">
-            <Presentation authenticated={authenticated} userInfo={userInfo} />
-          </div>
+            <div data-aos="fade">
+              <Presentation authenticated={authenticated} userInfo={userInfo} />
+            </div>
+
+            <div data-aos="fade">
+              <hr className="hr" />
+            </div>
+            <div data-aos="fade-up">
+              <ThemeChanger />
+            </div>
+
+            <div data-aos="fade">
+              <hr className="hr" id="about"/>
+            </div>
+            <div data-aos="fade-up">
+              <About authenticated={authenticated} userInfo={userInfo} />
+            </div>
           
-          <div data-aos="fade">
-            <hr className="hr" />
-          </div>
-          <div data-aos="fade-up">
-            <ThemeChanger />
-          </div>
+            <div data-aos="fade">
+              <hr className="hr" id="experience"/>
+            </div>
+            <div data-aos="fade-up">
+              <Experience authenticated={authenticated} />
+            </div>
 
-          <div data-aos="fade">
-            <hr className="hr" id="about"/>
-          </div>
-          <div data-aos="fade-up">
-            <About authenticated={authenticated} userInfo={userInfo} />
-          </div>
-    
-          <div data-aos="fade">
-            <hr className="hr" id="experience"/>
-          </div>
-          <div data-aos="fade-up">
-            <Experience authenticated={authenticated} />
-          </div>
+            <div data-aos="fade">
+              <hr className="hr" id="skills"/>
+            </div>
+            <div data-aos="fade">
+              <Skills authenticated={authenticated} userInfo={userInfo} />
+            </div>
 
-          <div data-aos="fade">
-            <hr className="hr" id="skills"/>
-          </div>
-          <div data-aos="fade">
-            <Skills authenticated={authenticated} userInfo={userInfo} />
-          </div>
+            <div data-aos="fade">
+              <hr className="hr" id="projects"/>
+            </div>
+            <div data-aos="fade">
+              <Projects setOpenItem={setOpenItem} authenticated={authenticated} setSingleItem={setSingleItem} />
+            </div>
 
-          <div data-aos="fade">
-            <hr className="hr" id="projects"/>
+            <div data-aos="fade">
+              <hr className="hr" id="contact"/>
+            </div>
+            <div data-aos="fade-up">
+              <Contact authenticated={authenticated} userInfo={userInfo} />
+            </div>
+          
+            {/* pop-up */}
+            {openItem && (
+              <Item
+                openItem={openItem}
+                setOpenItem={setOpenItem}
+                authenticated={authenticated}
+                singleItem={singleItem}
+                setSingleItem={setSingleItem}
+              />
+            )}
           </div>
-          <div data-aos="fade">
-            <Projects setOpenItem={setOpenItem} authenticated={authenticated} setSingleItem={setSingleItem} />
-          </div>
-
-          <div data-aos="fade">
-            <hr className="hr" id="contact"/>
-          </div>
-          <div data-aos="fade-up">
-            <Contact authenticated={authenticated} userInfo={userInfo} />
-          </div>
-    
-          {/* pop-up */}
-          {openItem && (
-            <Item
-              openItem={openItem}
-              setOpenItem={setOpenItem}
-              authenticated={authenticated}
-              singleItem={singleItem}
-              setSingleItem={setSingleItem}
-            />
-          )}
-        </div>
+        }
       </>
     );
 
