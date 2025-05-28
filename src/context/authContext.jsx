@@ -22,14 +22,20 @@ export const AuthContextProvider = ({children}) => {
             const bytes = CryptoJS.AES.decrypt(state.accessToken, import.meta.env.VITE_SECRET_ENCRYPTION_KEY);
             const decryptedAccessToken = bytes.toString(CryptoJS.enc.Utf8);
 
-            fetchUserData(decryptedAccessToken)
-                .then(userData => {
-                    dispatch({type: "LOGIN_SUCCESS", payload: {userInfo: userData, accessToken: state.accessToken}});
-                })
-                .catch(err => {
-                    toast.error("Error! Something went wrong!")
-                    dispatch({type: "LOGOUT"})
-                })
+            if (decryptedAccessToken){
+                fetchUserData(decryptedAccessToken)
+                    .then(userData => {
+                        dispatch({type: "LOGIN_SUCCESS", payload: {userInfo: userData, accessToken: state.accessToken}});
+                    })
+                    .catch(err => {
+                        toast.error("Error! Something went wrong!")
+                        dispatch({type: "LOGOUT"})
+                    })
+            }
+            else{
+                toast.error("Error! AccessToken is not valid!")
+                dispatch({type: "LOGOUT"})
+            }  
         }
     },[])
 
