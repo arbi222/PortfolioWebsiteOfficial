@@ -28,9 +28,36 @@
 
                 span{
                     font-size: 50px;
-                    color: var(--mainLinkColor);
+                    /* color: var(--mainLinkColor); */
                     font-family: 'Russo One', sans-serif;
                     font-weight: 500;
+
+                     background: linear-gradient(
+                        90deg,
+                        #00ffff, 
+                        #33ffff,
+                        #66fffb,
+                        #66ffcc,
+                        #66ff99,
+                        #33ff99,
+                        #00ff99,
+                        #00ff62,
+                        #00ff99,
+                        #33ff99,
+                        #66ff99,
+                        #66ffcc,
+                        #66fffb,
+                        #33ffff,
+                        #00ffff  
+                      );
+
+                      background-size: 300% auto;   /* më shumë hapësirë për smooth flow */
+                      background-clip: text;
+                      -webkit-background-clip: text;
+                      color: transparent;
+                      -webkit-text-fill-color: transparent;
+
+                      animation: smoothFlow 8s linear infinite;
                 }
             }
 
@@ -205,6 +232,15 @@
             color: grey;
         }
     }
+}
+
+@keyframes smoothFlow {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: -300% center;
+  }
 }
 
 @media(max-width: 930px){
