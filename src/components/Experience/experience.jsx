@@ -202,10 +202,12 @@ const Experience = ({ authenticated, userInfo }) => {
                                 </>
                             :
                                 <div>  
-                                    <p className="description">{seeMoreBtn[index] ? exp.description.slice(0, 200) + "..." : exp.description}</p>
-                                    <button className="see-more-less-btn" onClick={() => setSeeMoreBtn(prev => ({...prev, [index]: !prev[index]}))}>
-                                        {seeMoreBtn[index] ? "See more" : "See less"}
-                                    </button>
+                                    <p className="description">{seeMoreBtn[index] ? exp.description : exp.description.slice(0, 200) + "..."}</p>
+                                    {exp.description.length > 200 &&
+                                        <button className="see-more-less-btn" onClick={() => setSeeMoreBtn(prev => ({...prev, [index]: !prev[index]}))}>
+                                            {seeMoreBtn[index] ? "See less" : "See more"}
+                                        </button>
+                                    }
                                 </div>
                             }
                             

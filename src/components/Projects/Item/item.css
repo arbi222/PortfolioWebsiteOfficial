@@ -250,6 +250,22 @@
                          background-color: var(--buttonColorHover);
                          transform: translateY(-2px);
                     }
+
+                    &.see-more-less{
+                        display: inline;
+                        background-color: transparent;
+                        box-shadow: none;
+                        transition: none;
+                        transform: none;
+                        width: auto;
+                        height: auto;
+                        font-weight: 500;
+                        padding: 0 5px;
+
+                        &:hover{
+                            text-decoration: underline;
+                        }
+                    }
                 }
 
                 .category{
@@ -263,6 +279,7 @@
 
                 .note{
                     font-size: 20px;
+                    display: inline;
                 }
 
                 .btns-links{

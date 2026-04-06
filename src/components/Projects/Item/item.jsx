@@ -7,6 +7,7 @@ import deleteFileByURL from "../../../firebaseLib/deleteFile";
 import axiosInstance from "../../../axios";
 
 const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem}) => {
+    const [seeMoreBtn, setSeeMoreBtn] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const videoRef = useRef(null);
 
@@ -214,9 +215,16 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
                                 <h1>{singleItem.projectName}</h1>
                             </div>
                             
-                            <p className="note">
-                                {singleItem.bio}
-                            </p>
+                            <div>
+                                <p className="note">
+                                    {seeMoreBtn ? singleItem.bio : singleItem.bio.slice(0, 200) + "..."}
+                                </p>
+                                {singleItem.bio.length > 200 &&
+                                    <button className="see-more-less" onClick={() => setSeeMoreBtn(!seeMoreBtn)}>
+                                        {seeMoreBtn ? "See less" : "See more"}
+                                    </button>
+                                }
+                            </div>
 
                             <div className="btns-links">
                                 {singleItem.internetLink &&
