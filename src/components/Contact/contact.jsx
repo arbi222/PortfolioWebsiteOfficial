@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import "./contact.css";
 import {Instagram, GitHub, LinkedIn, ArrowForward} from '@mui/icons-material';
+import { CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
 import axiosInstance from "../../axios";
 
@@ -13,6 +14,7 @@ const Contact = ({authenticated, userInfo}) => {
     const gitHub = useRef();
     const instagram = useRef();
     const linkedIn = useRef();
+    const [loading, setLoading] = useState(false);
 
     const updateUser = async () => {
         const user = {
@@ -43,6 +45,7 @@ const Contact = ({authenticated, userInfo}) => {
 
     const contactUser = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         const contactingMessage = {
             _id: userInfo._id,
@@ -60,9 +63,11 @@ const Contact = ({authenticated, userInfo}) => {
             emailContact.current.value = ""
             subject.current.value = ""
             message.current.value = ""
+            setLoading(false);
             toast.success(res.data);
         }
         catch(err){
+            setLoading(false);
             toast.error(err.response.data);
         }
     }
@@ -151,31 +156,31 @@ const Contact = ({authenticated, userInfo}) => {
                         <div className="first-section">
                             <div className="fields">
                                 <label htmlFor="name">Name</label>
-                                <input type="text" id="name" ref={name} required/>
+                                <input type="text" id="name" ref={name} required disabled={loading}/>
                             </div>
                             <div className="fields">
                                 <label htmlFor="phone">Phone Number</label>
-                                <input type="text" id="phone" ref={mobileNumber} placeholder="Optional" />
+                                <input type="text" id="phone" ref={mobileNumber} placeholder="Optional"  disabled={loading}/>
                             </div>
                         </div>
                         
                         <div className="other-section">
                             <label htmlFor="mail">Email</label>
-                            <input type="email" id="mail" ref={emailContact} required/>
+                            <input type="email" id="mail" ref={emailContact} required disabled={loading}/>
                         </div>
                         <div className="other-section">
                             <label htmlFor="subject">Subject</label>
-                            <input type="text" id="subject" ref={subject} required/>
+                            <input type="text" id="subject" ref={subject} required disabled={loading}/>
                         </div>
                         <div className="message">
                             <label htmlFor="message">Your Message</label>
-                            <textarea id="message" ref={message} required></textarea>
+                            <textarea id="message" ref={message} required disabled={loading}></textarea>
                         </div>
-                        <button className="submit-btn" type="submit">
+                        <button className="submit-btn" type="submit" disabled={loading}>
                             <span>
-                                Send Message 
+                                {loading ? <CircularProgress color='#0da2b8' size="20px" /> : "Send Message"}
                             </span>
-                            <ArrowForward className="arrow-icon" />
+                            {!loading && <ArrowForward className="arrow-icon" />}
                         </button>
                     </form>
                     :
