@@ -182,7 +182,7 @@ const Projects = ({setOpenItem, authenticated, setSingleItem, userInfo}) => {
                                     </div>
                                 )}
                                 <div className="top-part" onClick={() => { setOpenItem(activeButton); setSingleItem(project); }}>
-                                    {project.image ? <img src={project.image} /> : <h3>Open Project</h3>}
+                                    {project.image ? <img src={project.image} /> : <h3>View Project</h3>}
                                 </div>
                                 <div className="bottom-part">
                                     <div className="separator"></div>

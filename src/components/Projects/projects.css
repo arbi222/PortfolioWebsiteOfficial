@@ -314,6 +314,35 @@
     } 
 }
 
+@media(max-width: 500px){
+    .projects-section{
+        .projects{
+            .left-panel{
+                .category-item{
+                    div{
+                        .btn{
+                            font-size: 18px;
+                            font-weight: bold;
+                        }
+                    }  
+                }
+            }
+        }
+    }
+}
+
+@media(max-width: 415px){
+    .projects-section{
+        .projects{
+            .right-panel{
+                .item{
+                    flex-basis: 90%;
+                }
+            }
+        }
+    } 
+}
+
 @media(max-width: 395px){
     .adding-category{
         input{

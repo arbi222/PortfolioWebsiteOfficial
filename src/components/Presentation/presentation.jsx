@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState, useEffect } from "react";
 import "./presentation.css"
 import upload from "../../firebaseLib/upload";
 import { toast } from "react-toastify";
@@ -42,12 +42,22 @@ const Presentation = ({authenticated, userInfo}) => {
         }
     }
 
-    const textarea = useRef();
+    const [textareaValue, setTextareaValue] = useState(userInfo?.bio);
+    const [disabledBtn, setDisabledBtn] = useState(true);
+
+    useEffect(() => {
+        if (cvFile.file || img.file || textareaValue !== userInfo?.bio){
+            setDisabledBtn(false);
+        }
+        else{
+            setDisabledBtn(true);
+        }
+    }, [cvFile.file, img.file, textareaValue])
 
     const savePresentation = async () => {
         let updateUserObject = {
             userId: userInfo._id,
-            bio: textarea.current.value,
+            bio: textareaValue,
             updatedAt: new Date(),
         }
         let cvFileUploaded = null;
@@ -77,6 +87,7 @@ const Presentation = ({authenticated, userInfo}) => {
 
         try{
             await axiosInstance.put("/api/users/" + userInfo._id, updateUserObject);
+            setDisabledBtn(true);
             toast.success("Presentation updated successfully!");
         }
         catch(err){
@@ -89,18 +100,22 @@ const Presentation = ({authenticated, userInfo}) => {
 
             <div className="container card">
                 <div className="info">
-                    {userInfo &&
-                        <h1>Hi, I'm <span>{userInfo?.firstName + " " + userInfo?.lastName}</span></h1>
-                    }
+                    <h1>Hi, I'm <span>{userInfo?.firstName + " " + userInfo?.lastName}</span></h1>
                     {authenticated ?
-                        <textarea className="textarea" defaultValue={userInfo?.bio} placeholder="Write something about yourself... " ref={textarea}/>
+                        <textarea className="textarea" 
+                                defaultValue={userInfo?.bio} 
+                                placeholder="Write something about yourself... " 
+                                onChange={(e) => setTextareaValue(e.target.value)}
+                        />
                         :
-                        <p>{userInfo?.bio}</p>
+                        <>
+                            <p>{userInfo?.bio}</p>
+                        </>
                     }
                 </div>
 
                 <div className="cv">
-                    <p>Download my curriculum vitae:</p>
+                    <p>Get In Touch:</p>
                     {authenticated ?
                         <div className="input-cv">
                             <label htmlFor="cv">Upload Your CV</label>
@@ -134,7 +149,11 @@ const Presentation = ({authenticated, userInfo}) => {
             </div>
 
             {authenticated &&
-                <button className="save-btn" onClick={savePresentation}>Save Presentation</button>
+                <button className={`save-btn ${disabledBtn ? "disabled-btn" : ""}`} 
+                        disabled={disabledBtn} 
+                        onClick={savePresentation}>
+                    Save Presentation
+                </button>
             }
         </div>
     </>

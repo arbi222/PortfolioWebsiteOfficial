@@ -8,6 +8,7 @@ import axiosInstance from "../../axios";
 
 const Experience = ({ authenticated, userInfo }) => {
     const [experiences, setExperiences] = useState([]);
+    const [seeMoreBtn, setSeeMoreBtn] = useState({});
 
     useEffect(() => {
         if (!userInfo) return;
@@ -200,7 +201,12 @@ const Experience = ({ authenticated, userInfo }) => {
                                     <input type="text" className="webpage-link" placeholder="Webpage link of the company" value={exp.webpageLink} onChange={(e) => handleInputChange(e, index, 'webpageLink')} />
                                 </>
                             :
-                            <p className="description">{exp.description}</p>
+                                <div>  
+                                    <p className="description">{seeMoreBtn[index] ? exp.description.slice(0, 200) + "..." : exp.description}</p>
+                                    <button className="see-more-less-btn" onClick={() => setSeeMoreBtn(prev => ({...prev, [index]: !prev[index]}))}>
+                                        {seeMoreBtn[index] ? "See more" : "See less"}
+                                    </button>
+                                </div>
                             }
                             
                             {authenticated &&

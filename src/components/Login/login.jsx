@@ -25,7 +25,7 @@ const Login = () => {
 
         try{
             const res = await axiosInstance.post("/api/reset/forgotPassword", {email: email.current.value});
-            toast.success(res.data);
+            toast.success(res.data.message);
             setLoader(false);
             setForgotPass(false);
         }
@@ -47,7 +47,7 @@ const Login = () => {
 
                     <div>
                         <label htmlFor="username">Email</label>
-                        <input type="email" autoFocus required id="username" ref={email} />
+                        <input type="email" autoFocus required id="username" ref={email} disabled={loader}/>
                     </div>
 
                     <button type="button" className="forgot-pass-btn" onClick={() => setForgotPass(false)}>Back to Login</button>
@@ -62,12 +62,12 @@ const Login = () => {
 
                     <div>
                         <label htmlFor="username">Email</label>
-                        <input type="email" autoFocus required id="username" ref={email} />
+                        <input type="email" autoFocus required id="username" ref={email} disabled={loading} />
                     </div>
 
                     <div>
                         <label htmlFor="password">Password</label>
-                        <input type="password" required id="password" minLength="6" ref={password} />
+                        <input type="password" required id="password" minLength="6" ref={password} disabled={loading} />
                     </div>
 
                     <button type="button" className="forgot-pass-btn" onClick={() => setForgotPass(true)}>Forgot password?</button>

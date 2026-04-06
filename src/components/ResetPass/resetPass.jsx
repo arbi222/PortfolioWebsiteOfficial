@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import "./resetPass.css";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,9 +9,11 @@ const ResetPass = () => {
 
     const newPassword = useRef(); 
     const confirmPassword = useRef(); 
+    const [loading, setLoading] = useState(false);
 
     const changePassword = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         const updatePass = {
             newPassword: newPassword.current.value,
@@ -23,6 +25,7 @@ const ResetPass = () => {
                 const res = await axiosInstance.post("/api/reset/resetPassword/" + resetPassToken, updatePass);
                 newPassword.current.value = "";
                 confirmPassword.current.value = "";
+                setLoading(false);
                 toast.success(res.data);
                 setTimeout(() => {
                     window.location.href = "/admin";
@@ -30,12 +33,14 @@ const ResetPass = () => {
             }
             else{
                 toast.error("No token is found!");
+                setLoading(false);
                 setTimeout(() => {
                     window.location.href = "/";
                 },3500)
             }
         }
         catch(err){
+            setLoading(false);
             toast.error(err.response.data);
         }
     }
@@ -58,15 +63,15 @@ const ResetPass = () => {
 
             <div>
                 <label htmlFor="password">New Password</label>
-                <input type="password" required id="password" autoFocus minLength="6" ref={newPassword} />
+                <input type="password" required id="password" autoFocus minLength="6" ref={newPassword} disabled={loading} />
             </div>
 
             <div>
                 <label htmlFor="confirm-password">Confirm Password</label>
-                <input type="password" required id="confirm-password" minLength="6" ref={confirmPassword} />
+                <input type="password" required id="confirm-password" minLength="6" ref={confirmPassword} disabled={loading} />
             </div>
 
-            <button className="save-pass-btn" type="submit">
+            <button className={`save-pass-btn ${loading ? "disabled-btn" : ""}`} type="submit" disabled={loading}>
                 Save New Password
             </button>
         </form>

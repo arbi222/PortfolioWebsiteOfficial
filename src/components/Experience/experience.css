@@ -234,9 +234,25 @@
                 }
 
                 .description{
+                    display: inline;
                     width: 100%;
                     font-size: 18px;
                     overflow-wrap: break-word;
+                }
+
+                .see-more-less-btn{
+                    display: inline;
+                    background-color: transparent;
+                    border: none;
+                    color: var(--mainLinkColor);
+                    font-size: 1rem;
+                    cursor: pointer;
+                    padding: 5px;
+                    border-radius: 7px;
+
+                    &:hover{
+                        text-decoration: underline;
+                    }
                 }
             }
         }

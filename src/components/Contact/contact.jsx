@@ -68,13 +68,12 @@ const Contact = ({authenticated, userInfo}) => {
     }
 
     return <>
-
         <section className="contact-section">
             <h1 className="contact-header">Get In Touch</h1>
 
-            <div className="contact-wrapper" style={{alignItems: authenticated ? "center" : ""}}>
+            <div className="contact-wrapper">
                 <div className="info-panel">
-                    <div className="thumbnail">
+                    <div className="thumbnail" style={{margin: "0 auto"}}>
                         <img src="./contact.png" />
                     </div>
                     
@@ -147,37 +146,41 @@ const Contact = ({authenticated, userInfo}) => {
                     </div>         
                 </div>
                 
-                <form className="contact-panel" onSubmit={contactUser}>
-                    <div className="first-section">
-                        <div className="fields">
-                            <label htmlFor="name">Name</label>
-                            <input type="text" id="name" ref={name} required/>
+                {!authenticated ?
+                    <form className="contact-panel" onSubmit={contactUser}>
+                        <div className="first-section">
+                            <div className="fields">
+                                <label htmlFor="name">Name</label>
+                                <input type="text" id="name" ref={name} required/>
+                            </div>
+                            <div className="fields">
+                                <label htmlFor="phone">Phone Number</label>
+                                <input type="text" id="phone" ref={mobileNumber} placeholder="Optional" />
+                            </div>
                         </div>
-                        <div className="fields">
-                            <label htmlFor="phone">Phone Number</label>
-                            <input type="text" id="phone" ref={mobileNumber} placeholder="Optional" />
+                        
+                        <div className="other-section">
+                            <label htmlFor="mail">Email</label>
+                            <input type="email" id="mail" ref={emailContact} required/>
                         </div>
-                    </div>
-                    
-                    <div className="other-section">
-                        <label htmlFor="mail">Email</label>
-                        <input type="email" id="mail" ref={emailContact} required/>
-                    </div>
-                    <div className="other-section">
-                        <label htmlFor="subject">Subject</label>
-                        <input type="text" id="subject" ref={subject} required/>
-                    </div>
-                    <div className="message">
-                        <label htmlFor="message">Your Message</label>
-                        <textarea id="message" ref={message} required></textarea>
-                    </div>
-                    <button className="submit-btn" type="submit">
-                        <span>
-                            Send Message 
-                        </span>
-                        <ArrowForward className="arrow-icon" />
-                    </button>
-                </form>
+                        <div className="other-section">
+                            <label htmlFor="subject">Subject</label>
+                            <input type="text" id="subject" ref={subject} required/>
+                        </div>
+                        <div className="message">
+                            <label htmlFor="message">Your Message</label>
+                            <textarea id="message" ref={message} required></textarea>
+                        </div>
+                        <button className="submit-btn" type="submit">
+                            <span>
+                                Send Message 
+                            </span>
+                            <ArrowForward className="arrow-icon" />
+                        </button>
+                    </form>
+                    :
+                    <div></div>
+                }
             </div>
             
         </section>

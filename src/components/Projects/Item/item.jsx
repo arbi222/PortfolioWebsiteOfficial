@@ -19,7 +19,6 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
         setIsPlaying(false);
     }
 
-    const [progress, setProgress] = useState(0);
     const [img, setImg] = useState({
             file: null,
             url: ""
@@ -30,6 +29,23 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
             const file = e.target.files[0];
 
             setImg({
+                file: file,
+                url: URL.createObjectURL(file)
+            })
+        }
+    }
+
+    const [progress, setProgress] = useState(0);
+    const [video, setVideo] = useState({
+        file: null,
+        url: ""
+    }); 
+
+    const handleVideo = (e) => {
+        if (e.target.files[0]){
+            const file = e.target.files[0];
+
+            setVideo({
                 file: file,
                 url: URL.createObjectURL(file)
             })
@@ -53,34 +69,36 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
             internetLink: internetLink.current.value,
             sourceCodeLink: sourceCodeLink.current.value
         }
-        let fileUploaded = null;
+        let imgUploaded = null;
+        let videoUploaded = null;
 
         try{
             if (img.file){
-                // lets first delete the old photo/video from the firebase 
+                // lets first delete the old photo from the firebase 
                 if (singleItem?.image){
                     await deleteFileByURL(singleItem.image);
                     project.image = "";
                 }
-                else if (singleItem?.video){
+                
+                imgUploaded = await upload(img.file, (progress) => {
+                    // here we can use the progress if we want
+                })
+                project.image = imgUploaded;
+            }
+
+            if (video.file){
+                // lets first delete the old video from the firebase 
+                if (singleItem?.video){
                     await deleteFileByURL(singleItem.video);
                     project.video = "";
                 }
-
-                if (img.file.type.startsWith("image/")){
-                    
-                    fileUploaded = await upload(img.file, (progress) => {
-                        // here we can use the progress if we want
-                    })
-                    project.image = fileUploaded;
-                }
-                else if (img.file.type.startsWith("video/")){
-                    fileUploaded = await upload(img.file, (progress) => {
-                        setProgress(progress);
-                    })
-                    project.video = fileUploaded;
-                }
+                
+                videoUploaded = await upload(img.file, (progress) => {
+                    setProgress(progress);
+                })
+                project.video = videoUploaded;
             }
+
             const res = await axiosInstance.post("/api/projectItem/createorUpdateProject", project);
             toast.success(res.data);
             window.location.reload();
@@ -102,67 +120,63 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
                     <div className={!singleItem?.image && !singleItem?.video && !authenticated ? "left-side no-left-side" : "left-side"}>
                         {authenticated ?
                             <div className="uploading-container">
-                                {img.url ? (
-                                    <div>
-                                        {img.file.type.startsWith("image/") ? (
-                                            <>
-                                                <img src={img.url} alt="uploaded" />
-                                                <button onClick={() => document.getElementById("upload-file").click()}>
-                                                    Upload another file
-                                                </button>
-                                            </>
-                                        ) : img.file.type.startsWith("video/") ? (
-                                            <>
-                                                <video src={img.url} controls />
-                                                {progress > 0 && progress < 100 &&
-                                                    <progress value={progress} max="100">{progress}</progress>
-                                                }
-                                                <button onClick={() => document.getElementById("upload-file").click()}>
-                                                    Upload another file
-                                                </button>
-                                            </>
-                                        ) : null}
-                                    </div>
-                                ) : singleItem?.image ? (
-                                    <div>
-                                        <img src={singleItem.image} alt="single item" />
-                                        <button onClick={() => document.getElementById("upload-file").click()}>
-                                            Upload another file
-                                        </button>
-                                    </div>
-                                ) : singleItem?.video ? (
-                                    <div className="video-wrapper">
-                                        <img
-                                            src="./thumbnail.jpg"
-                                            alt="video thumbnail"
-                                            style={{ display: !isPlaying ? "" : "none", cursor: "pointer" }}
-                                            onClick={handlePlay}
-                                        />
-                                        <video
-                                            ref={videoRef}
-                                            src={singleItem.video}
-                                            onClick={handlePlay}
-                                            style={{ display: isPlaying ? "" : "none" }}
-                                            controls
-                                            onEnded={handleVideoEnded}
-                                        />
-                                        <button onClick={() => document.getElementById("upload-file").click()}>
-                                            Upload another file
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <label htmlFor="upload-file" title="Upload an image or video">
-                                        <img src="./uploadImg.jpg" alt="upload" />
-                                    </label>
-                                )}
-                                <input type="file" id="upload-file" onChange={handleImage} accept="image/*,image/heif,image/heic,video/*,video/mp4,video/x-m4v,video/x-matroska,.mkv"/>
+                                <div className="photo-section">
+                                    {img.url ? 
+                                        (<img src={img.url} alt="uploaded" />)
+                                    : 
+                                    singleItem?.image ? 
+                                        (<img src={singleItem.image} alt="single item" />)
+                                    :
+                                    (<label htmlFor="upload-img" title="Upload an image">
+                                        <img src="./uploadImg.jpg" className="default-img" alt="upload" />
+                                    </label>)
+                                    }
+                                    <button onClick={() => document.getElementById("upload-img").click()}>
+                                        {(singleItem?.image || img.url) ? "Upload another image" : "Upload image"}
+                                    </button>
+                                    <input type="file" id="upload-img" onChange={handleImage} accept="image/*,image/heif,image/heic"/>
+                                </div>
+                                    
+                                <div className="video-section">
+                                    {video.url ? 
+                                        (<>
+                                            <video src={video.url} controls />
+                                            {progress > 0 && progress < 100 &&
+                                                <progress value={progress} max="100">{progress}</progress>
+                                            }
+                                        </>)
+                                    :
+                                    singleItem?.video ? 
+                                        (<div className="video-wrapper">
+                                            <img
+                                                src="./thumbnail.jpg"
+                                                alt="video thumbnail"
+                                                style={{ display: !isPlaying ? "" : "none", cursor: "pointer" }}
+                                                onClick={handlePlay}
+                                            />
+                                            <video
+                                                ref={videoRef}
+                                                src={singleItem.video}
+                                                onClick={handlePlay}
+                                                style={{ display: isPlaying ? "" : "none" }}
+                                                controls
+                                                onEnded={handleVideoEnded}
+                                            />
+                                        </div>)
+                                    :
+                                    (<label htmlFor="upload-video" title="Upload a video">
+                                        <img src="./uploadImg.jpg" className="default-img" alt="upload" />
+                                    </label>)
+                                    }
+                                    <button onClick={() => document.getElementById("upload-video").click()}>
+                                        {(singleItem?.video || video.url) ? "Upload another video" : "Upload video"}
+                                    </button>
+                                    <input type="file" id="upload-video" onChange={handleVideo} accept="video/*,video/mp4,video/x-m4v,video/x-matroska,.mkv"/>
+                                </div> 
                             </div>
                         :
-                        singleItem?.image ? 
-                            <img className="image" src={singleItem.image} loading="lazy"/>
-                            :
-                            singleItem?.video &&
-                                <div className="video-wrapper">
+                            singleItem?.video ?
+                                <div className={`${authenticated ? "video-wrapper" : "auth-video-wrapper"}`}>
                                     <img src="./thumbnail.jpg" alt="" style={{display: !isPlaying ? "" : "none"}} onClick={handlePlay} />
                                     <video ref={videoRef} 
                                             src={singleItem.video} 
@@ -172,8 +186,10 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
                                             onEnded={handleVideoEnded}>   
                                     </video>
                                 </div> 
+                            :
+                            singleItem?.image &&
+                                <img className="image" src={singleItem.image} />
                         }
-                        
                     </div>
 
                     <div className="right-side">
@@ -212,10 +228,7 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
                         }
                     </div>
                 </div>
-                
-                
             </div>
-            
         </div>
     </>
 }   

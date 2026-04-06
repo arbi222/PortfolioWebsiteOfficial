@@ -76,6 +76,11 @@
             &:hover{
                 background-color: rgba(10, 222, 255, 1);
             }
+
+            &.disabled-btn{
+                cursor: not-allowed;
+                background-color: grey;
+            }
         }
 
         &::before{
