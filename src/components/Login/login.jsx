@@ -1,35 +1,39 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import "./login.css";
 import { CircularProgress } from "@mui/material";
 import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../context/authContext";
-import axios from "axios";
 import { toast } from "react-toastify";
+import axiosInstance from "../../axios";
 
 const Login = () => {
 
-    const apiUrl = import.meta.env.VITE_API_KEY;
     const email = useRef();
     const password = useRef();
-    const {isFetching, dispatch} = useContext(AuthContext);
+    const {dispatch} = useContext(AuthContext);
+    const [loader, setLoader] = useState(false);
+    const [forgotPass, setForgotPass] = useState(false);
 
     const handleLogin = (e) => {
         e.preventDefault();
+        setLoader(true);
         loginCall({username: email.current.value, password: password.current.value}, dispatch);
+        setLoader(false);
     }
-
-    const [forgotPass, setForgotPass] = useState(false);
 
     const handleReset = async (e) => {
         e.preventDefault();
+        setLoader(true);
 
         try{
-            const res = await axios.post(apiUrl + "/api/reset/forgotPassword", {email: email.current.value});
+            const res = await axiosInstance.post("/api/reset/forgotPassword", {email: email.current.value});
             toast.success(res.data);
+            setLoader(false);
             setForgotPass(false);
         }
         catch(err){
             toast.error(err.response.data);
+            setLoader(false);
         }
     }
 
@@ -50,8 +54,8 @@ const Login = () => {
 
                     <button type="button" className="forgot-pass-btn" onClick={() => setForgotPass(false)}>Back to Login</button>
 
-                    <button className="login-btn" type="submit" disabled={isFetching}>
-                        {isFetching ? <CircularProgress color='#000' size="25px" /> : "Send Email"}
+                    <button className="login-btn" type="submit" disabled={loader}>
+                        {loader ? <CircularProgress color='#000' size="25px" /> : "Send Email"}
                     </button>
                 </form>
             :
@@ -70,8 +74,8 @@ const Login = () => {
 
                     <button type="button" className="forgot-pass-btn" onClick={() => setForgotPass(true)}>Forgot password?</button>
 
-                    <button className="login-btn" type="submit" disabled={isFetching}>
-                        {isFetching ? <CircularProgress color='#000' size="25px" /> : "Log in"}
+                    <button className="login-btn" type="submit" disabled={loader}>
+                        {loader ? <CircularProgress color='#000' size="25px" /> : "Log in"}
                     </button>
                 </form>
             }  
