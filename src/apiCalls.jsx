@@ -2,6 +2,8 @@ import axiosInstance from './axios';
 import { toast } from 'react-toastify';
 
 export const loginCall = async (userCredentials, dispatch) => {
+    dispatch({type: "LOGIN_START"});
+
     try{
         const res = await axiosInstance.post("/api/auth/login", userCredentials);
         if (res.data){

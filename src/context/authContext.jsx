@@ -5,6 +5,7 @@ import axiosInstance from "../axios";
 const INITIAL_STATE = {
     user: null,
     isAuthenticated: false,
+    loading: false,
     isFetching: false,
     error: false
 }
@@ -42,6 +43,7 @@ export const AuthContextProvider = ({children}) => {
                 isAuthenticated: state.isAuthenticated,
                 isFetching: state.isFetching,
                 error: state.error,
+                loading: state.loading,
                 dispatch,
                 }}
         >

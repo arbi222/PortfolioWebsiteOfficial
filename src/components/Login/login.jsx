@@ -10,15 +10,13 @@ const Login = () => {
 
     const email = useRef();
     const password = useRef();
-    const {dispatch} = useContext(AuthContext);
+    const {dispatch, loading} = useContext(AuthContext);
     const [loader, setLoader] = useState(false);
     const [forgotPass, setForgotPass] = useState(false);
 
     const handleLogin = (e) => {
         e.preventDefault();
-        setLoader(true);
         loginCall({username: email.current.value, password: password.current.value}, dispatch);
-        setLoader(false);
     }
 
     const handleReset = async (e) => {
@@ -74,8 +72,8 @@ const Login = () => {
 
                     <button type="button" className="forgot-pass-btn" onClick={() => setForgotPass(true)}>Forgot password?</button>
 
-                    <button className="login-btn" type="submit" disabled={loader}>
-                        {loader ? <CircularProgress color='#000' size="25px" /> : "Log in"}
+                    <button className="login-btn" type="submit" disabled={loading}>
+                        {loading ? <CircularProgress color='#000' size="25px" /> : "Log in"}
                     </button>
                 </form>
             }  
