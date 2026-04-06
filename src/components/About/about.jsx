@@ -1,17 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./about.css";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axiosInstance from "../../axios";
 
 const About = ({authenticated, userInfo}) => {
 
-    const apiUrl = import.meta.env.VITE_API_KEY;
     const [aboutInfo, setAboutInfo] = useState(null);
     useEffect(() => {
         const getAbout = async () => {
             try{
                 if (userInfo._id){
-                    const about = await axios.get(apiUrl + "/api/about/getAbout/" + userInfo?._id);
+                    const about = await axiosInstance.get("/api/about/getAbout/" + userInfo?._id);
                     setAboutInfo(about.data);
                 }
             }
@@ -37,7 +36,7 @@ const About = ({authenticated, userInfo}) => {
         }
 
         try{
-            const aboutResponse = await axios.post(apiUrl + "/api/about/createOrUpdateAbout", {about});
+            const aboutResponse = await axiosInstance.post("/api/about/createOrUpdateAbout", {about});
             if (aboutResponse.data === "updated"){
                 toast.success("About section updated successfully!");
             }

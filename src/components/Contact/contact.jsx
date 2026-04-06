@@ -1,12 +1,10 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import "./contact.css";
 import {Instagram, GitHub, LinkedIn, ArrowForward} from '@mui/icons-material';
 import { toast } from "react-toastify";
-import axios from "axios";
+import axiosInstance from "../../axios";
 
 const Contact = ({authenticated, userInfo}) => {
-
-    const apiUrl = import.meta.env.VITE_API_KEY;
 
     const title = useRef();
     const bio = useRef();
@@ -29,7 +27,7 @@ const Contact = ({authenticated, userInfo}) => {
         }
 
         try{
-            const res = await axios.put(apiUrl + "/api/users/" + userInfo._id, user);
+            const res = await axiosInstance.put("/api/users/" + userInfo._id, user);
             toast.success(res.data);
         }
         catch(err){
@@ -56,7 +54,7 @@ const Contact = ({authenticated, userInfo}) => {
         }
 
         try{
-            const res = await axios.post(apiUrl + "/api/contact/contactOwner", contactingMessage);
+            const res = await axiosInstance.post("/api/contact/contactOwner", contactingMessage);
             name.current.value = ""
             mobileNumber.current.value = ""
             emailContact.current.value = ""

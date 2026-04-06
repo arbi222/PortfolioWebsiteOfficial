@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./projects.css";
 import { toast } from "react-toastify";
 import { Delete } from "@mui/icons-material";
 import { MoonLoader } from "react-spinners";
-import axios from "axios";
 import deleteFileByURL from "../../firebaseLib/deleteFile";
+import axiosInstance from "../../axios";
 
 
-const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
-    const apiUrl = import.meta.env.VITE_API_KEY;
+const Projects = ({setOpenItem, authenticated, setSingleItem, userInfo}) => {
     const [categories, setCategories] = useState([]);
     const [activeButton, setActiveButton] = useState(null);
     const [deletedCategory, setDeletedCategory] = useState(false);
     useEffect(() => {
+        if (!userInfo) return;
         const getCategorys = async () => {
-            const res = await axios.get(apiUrl + "/api/category/getCategorys");
+            const res = await axiosInstance.get("/api/category/getCategorys");
             if (res.data.length > 0){
                 setCategories(res.data.sort((c1, c2) => {
                     return new Date(c2.createdAt) - new Date(c1.createdAt)
@@ -28,7 +28,7 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
             setDeletedCategory(false); 
         }
         getCategorys();
-    }, [deletedCategory])
+    }, [deletedCategory, userInfo])
 
     const handleButtonClick = (category) => {
        setActiveButton(category);
@@ -38,7 +38,7 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
     const addCategory = async () => {
         try{
             if (newCategory) {
-                const res = await axios.post(apiUrl + "/api/category/createCategory", {categoryName: newCategory.trim()});
+                const res = await axiosInstance.post("/api/category/createCategory", {categoryName: newCategory.trim()});
                 setCategories([{categoryName: newCategory}, ...categories]);
                 setNewCategory("");
                 toast.success(res.data);
@@ -56,7 +56,7 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
         setProjects([]);
         const getProjects = async () => {
             if (activeButton?._id){
-                const res = await axios.get(apiUrl + "/api/projectItem/getAllItems/" + activeButton._id);
+                const res = await axiosInstance.get("/api/projectItem/getAllItems/" + activeButton._id);
                 setProjects(res.data.sort((p1, p2) => {
                     return new Date(p2.createdAt) - new Date(p1.createdAt)
                 }));
@@ -74,7 +74,7 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
             });
             await Promise.all(deleteProjectFiles);
             
-            const res = await axios.delete(`${apiUrl}/api/category/deleteCategory/${categoryName}`);
+            const res = await axiosInstance.delete(`/api/category/deleteCategory/${categoryName}`);
             setCategories(categories.filter((cat) => cat.categoryName !== categoryName));
             setDeletedCategory(true);
             toast.success(res.data);
@@ -91,7 +91,7 @@ const Projects = ({setOpenItem, authenticated, setSingleItem}) => {
             else if (project.video){
                 await deleteFileByURL(project.video);
             }
-            const res = await axios.delete(apiUrl + "/api/projectItem/deleteProjectItem/" + project._id);
+            const res = await axiosInstance.delete("/api/projectItem/deleteProjectItem/" + project._id);
             setProjects((prevProjects) => prevProjects.filter(p => p._id !== project._id));
             toast.success(res.data);
         }

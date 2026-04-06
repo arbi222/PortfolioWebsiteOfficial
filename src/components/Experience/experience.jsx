@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./experience.css";
 import { Delete } from "@mui/icons-material";
 import { toast } from "react-toastify";
-import axios from "axios";
 import upload from "../../firebaseLib/upload";
 import deleteFileByURL from "../../firebaseLib/deleteFile";
+import axiosInstance from "../../axios";
 
-const Experience = ({ authenticated }) => {
-    const apiUrl = import.meta.env.VITE_API_KEY;
+const Experience = ({ authenticated, userInfo }) => {
     const [experiences, setExperiences] = useState([]);
 
     useEffect(() => {
+        if (!userInfo) return;
         const getExperiences = async () => {
-            const res = await axios(apiUrl + "/api/experience/getAllExperiences");
+            const res = await axiosInstance.get("/api/experience/getAllExperiences");
             setExperiences(res.data.sort((ex1, ex2) => {
                 return new Date(ex2.createdAt) - new Date(ex1.createdAt);
             }));
         }
         getExperiences();
-    }, [])
+    }, [userInfo])
 
 
     const handleImage = (e, index) => {
@@ -64,7 +64,7 @@ const Experience = ({ authenticated }) => {
                 if (experiencetobeDeleted.img){
                     await deleteFileByURL(experiencetobeDeleted.img);
                 }
-                const res = await axios.delete(apiUrl + "/api/experience/deleteExperience/" + experiencetobeDeleted._id);
+                const res = await axiosInstance.delete("/api/experience/deleteExperience/" + experiencetobeDeleted._id);
                 toast.success(res.data);
             }
             
@@ -85,7 +85,7 @@ const Experience = ({ authenticated }) => {
                 })
                 experiences[index].img = imgFileUploaded;
             }
-            const res = await axios.post(apiUrl + "/api/experience/addOrUpdateExperience", experiences[index]);
+            const res = await axiosInstance.post("/api/experience/addOrUpdateExperience", experiences[index]);
             toast.success(res.data);
             window.location.reload();
         }

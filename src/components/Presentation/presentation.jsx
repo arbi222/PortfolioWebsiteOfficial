@@ -1,12 +1,11 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "./presentation.css"
-import axios from "axios";
 import upload from "../../firebaseLib/upload";
 import { toast } from "react-toastify";
 import deleteFileByURL from "../../firebaseLib/deleteFile";
+import axiosInstance from "../../axios";
 
 const Presentation = ({authenticated, userInfo}) => {
-    const apiUrl = import.meta.env.VITE_API_KEY;
 
     const [cvFile, setFile] = useState({
         file: null,
@@ -77,11 +76,11 @@ const Presentation = ({authenticated, userInfo}) => {
         }
 
         try{
-            await axios.put(apiUrl + "/api/users/" + userInfo._id, updateUserObject);
+            await axiosInstance.put("/api/users/" + userInfo._id, updateUserObject);
             toast.success("Presentation updated successfully!");
         }
         catch(err){
-            toast.error(err.respone.data);
+            toast.error(err.response.data);
         }
     }
 

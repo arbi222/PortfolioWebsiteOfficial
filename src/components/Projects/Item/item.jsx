@@ -1,13 +1,12 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "./item.css"
 import CloseIcon from '@mui/icons-material/Close';
 import { toast } from "react-toastify";
 import upload from "../../../firebaseLib/upload";
-import axios from "axios";
 import deleteFileByURL from "../../../firebaseLib/deleteFile";
+import axiosInstance from "../../../axios";
 
 const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem}) => {
-    const apiUrl = import.meta.env.VITE_API_KEY;
     const [isPlaying, setIsPlaying] = useState(false);
     const videoRef = useRef(null);
 
@@ -82,7 +81,7 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
                     project.video = fileUploaded;
                 }
             }
-            const res = await axios.post(apiUrl + "/api/projectItem/createorUpdateProject", project);
+            const res = await axiosInstance.post("/api/projectItem/createorUpdateProject", project);
             toast.success(res.data);
             window.location.reload();
         }

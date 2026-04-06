@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./home.css"
 import Navbar from "../Navbar/navbar";
 import Presentation from "../Presentation/presentation";
@@ -10,14 +10,14 @@ import Projects from "../Projects/projects";
 import Contact from "../Contact/contact";
 import BackToTopBtn from "../BacktoTop/backtotop";
 import Item from "../Projects/Item/item";
-import axios from "axios";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { RiseLoader } from "react-spinners";
+import { useContext } from "react";
+import { AuthContext } from "../../context/authContext";
 
-const Home = ({authenticated, dispatch}) => {
+const Home = () => {
 
-    const apiUrl = import.meta.env.VITE_API_KEY;
+    const {user, isAuthenticated, dispatch} = useContext(AuthContext);
 
     useEffect(() => {
       AOS.init({
@@ -52,31 +52,14 @@ const Home = ({authenticated, dispatch}) => {
     }, [openItem]);
 
 
-    const [userInfo, setUserInfo] = useState(null);
-    const [loader, setLoader] = useState(true);
-    useEffect(() => {
-      setLoader(true);
-      const getUser = async () => {
-        const res = await axios.get(apiUrl + "/api/users/getUser");
-        setUserInfo(res.data[0]);
-        setLoader(false);
-      }
-      getUser();
-    }, [])
-
     return (
       <>
-        {loader ? 
-            <div className="home-loader">
-              <RiseLoader color="#0da2b8" size={35} speedMultiplier={1.3}/>
-            </div>
-          :
           <div className="home-page">
-            <Navbar authenticated={authenticated} dispatch={dispatch} />
+            <Navbar authenticated={isAuthenticated} dispatch={dispatch} />
             <BackToTopBtn />
 
             <div data-aos="fade">
-              <Presentation authenticated={authenticated} userInfo={userInfo} />
+              <Presentation authenticated={isAuthenticated} userInfo={user} />
             </div>
 
             <div data-aos="fade">
@@ -90,35 +73,35 @@ const Home = ({authenticated, dispatch}) => {
               <hr className="hr" id="about"/>
             </div>
             <div data-aos="fade-up">
-              <About authenticated={authenticated} userInfo={userInfo} />
+              <About authenticated={isAuthenticated} userInfo={user} />
             </div>
           
             <div data-aos="fade">
               <hr className="hr" id="experience"/>
             </div>
             <div data-aos="fade-up">
-              <Experience authenticated={authenticated} />
+              <Experience authenticated={isAuthenticated} userInfo={user} />
             </div>
 
             <div data-aos="fade">
               <hr className="hr" id="skills"/>
             </div>
             <div data-aos="fade">
-              <Skills authenticated={authenticated} userInfo={userInfo} />
+              <Skills authenticated={isAuthenticated} userInfo={user} />
             </div>
 
             <div data-aos="fade">
               <hr className="hr" id="projects"/>
             </div>
             <div data-aos="fade">
-              <Projects setOpenItem={setOpenItem} authenticated={authenticated} setSingleItem={setSingleItem} />
+              <Projects setOpenItem={setOpenItem} authenticated={isAuthenticated} setSingleItem={setSingleItem} userInfo={user}/>
             </div>
 
             <div data-aos="fade">
               <hr className="hr" id="contact"/>
             </div>
             <div data-aos="fade-up">
-              <Contact authenticated={authenticated} userInfo={userInfo} />
+              <Contact authenticated={isAuthenticated} userInfo={user} />
             </div>
           
             {/* pop-up */}
@@ -126,13 +109,12 @@ const Home = ({authenticated, dispatch}) => {
               <Item
                 openItem={openItem}
                 setOpenItem={setOpenItem}
-                authenticated={authenticated}
+                authenticated={isAuthenticated}
                 singleItem={singleItem}
                 setSingleItem={setSingleItem}
               />
             )}
           </div>
-        }
       </>
     );
 

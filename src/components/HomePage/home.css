@@ -8,10 +8,3 @@
         border: 1px solid var(--mainBorderColor);
     }
 }
-
-.home-loader{
-    height: 100vh; 
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-}

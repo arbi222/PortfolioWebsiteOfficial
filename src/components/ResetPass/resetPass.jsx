@@ -1,11 +1,10 @@
 import React, { useRef } from "react";
 import "./resetPass.css";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
+import axiosInstance from "../../axios";
 
 const ResetPass = () => {
-    const apiUrl = import.meta.env.VITE_API_KEY;
     const resetPassToken = useParams().token;
 
     const newPassword = useRef(); 
@@ -21,7 +20,7 @@ const ResetPass = () => {
 
         try{
             if (resetPassToken){
-                const res = await axios.post(apiUrl + "/api/reset/resetPassword/" + resetPassToken, updatePass);
+                const res = await axiosInstance.post("/api/reset/resetPassword/" + resetPassToken, updatePass);
                 newPassword.current.value = "";
                 confirmPassword.current.value = "";
                 toast.success(res.data);

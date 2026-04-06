@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./skills.css";
 import { Close } from '@mui/icons-material';
-import axios from "axios";
 import { toast } from "react-toastify";
+import axiosInstance from "../../axios";
 
 const Skills = ({ authenticated, userInfo }) => {
-    const apiUrl = import.meta.env.VITE_API_KEY;
     const [skills, setSkills] = useState([]);
     useEffect(() => {
         setSkills(userInfo?.skills);
@@ -30,7 +29,7 @@ const Skills = ({ authenticated, userInfo }) => {
     const saveSkills = async () => {
         try{
             if (skillsChanged){
-                const res = await axios.put(apiUrl + "/api/users/addSkill", {skills: skills, userId: userInfo._id});
+                const res = await axiosInstance.put("/api/users/addSkill", {skills: skills, userId: userInfo._id});
                 toast.success(res.data);
             }
         }
