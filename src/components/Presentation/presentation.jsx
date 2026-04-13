@@ -95,6 +95,10 @@ const Presentation = ({authenticated, userInfo}) => {
         }
     }
 
+    const downloadCv = () => {
+        window.location.href = import.meta.env.VITE_API_KEY + `/api/users/download-cv?url=${encodeURIComponent(userInfo?.cv)}`;
+    }
+
     return <>
         <div className="presentation">
 
@@ -129,7 +133,7 @@ const Presentation = ({authenticated, userInfo}) => {
                         </div>
                     :   
                         <div>
-                            <a href={userInfo?.cv}>Download CV</a>
+                            <a href="#" onClick={downloadCv}>Download CV</a>
                             <a href="#contact">Contact Me</a>
                         </div>
                     }
