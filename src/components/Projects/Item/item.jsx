@@ -8,17 +8,6 @@ import axiosInstance from "../../../axios";
 
 const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem}) => {
     const [seeMoreBtn, setSeeMoreBtn] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const videoRef = useRef(null);
-
-    const handlePlay = () => {
-        setIsPlaying(true);
-        videoRef.current.play();
-    };
-
-    const handleVideoEnded = () => {
-        setIsPlaying(false);
-    }
 
     const [img, setImg] = useState({
             file: null,
@@ -36,27 +25,36 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
         }
     }
 
-    const [progress, setProgress] = useState(0);
-    const [video, setVideo] = useState({
-        file: null,
-        url: ""
-    }); 
+    const getEmbedUrl = (url) => {
+        if (!url) return "";
 
-    const handleVideo = (e) => {
-        if (e.target.files[0]){
-            const file = e.target.files[0];
+        try {
+            const parsedUrl = new URL(url);
 
-            setVideo({
-                file: file,
-                url: URL.createObjectURL(file)
-            })
+            if (parsedUrl.hostname.includes("youtube.com")) {
+                const videoId = parsedUrl.searchParams.get("v");
+                if (videoId) {
+                    return `https://www.youtube.com/embed/${videoId}`;
+                }
+            }
+
+            if (parsedUrl.hostname.includes("youtu.be")) {
+                const videoId = parsedUrl.pathname.slice(1);
+                return `https://www.youtube.com/embed/${videoId}`;
+            }
+
+            return url;
+        } 
+        catch {
+            return url;
         }
-    }
+    };
 
     const projectName = useRef();
     const bio = useRef();
     const internetLink = useRef();
     const sourceCodeLink = useRef();
+    const videoLinkInput = useRef();
 
     const saveProject = async (e) => {
         e.preventDefault();
@@ -67,11 +65,11 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
             projectId: singleItem?._id,
             projectName: projectName.current.value,
             bio: bio.current.value,
+            video: videoLinkInput.current.value,
             internetLink: internetLink.current.value,
             sourceCodeLink: sourceCodeLink.current.value
         }
         let imgUploaded = null;
-        let videoUploaded = null;
 
         try{
             if (img.file){
@@ -85,19 +83,6 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
                     // here we can use the progress if we want
                 })
                 project.image = imgUploaded;
-            }
-
-            if (video.file){
-                // lets first delete the old video from the firebase 
-                if (singleItem?.video){
-                    await deleteFileByURL(singleItem.video);
-                    project.video = "";
-                }
-                
-                videoUploaded = await upload(img.file, (progress) => {
-                    setProgress(progress);
-                })
-                project.video = videoUploaded;
             }
 
             const res = await axiosInstance.post("/api/projectItem/createorUpdateProject", project);
@@ -137,56 +122,20 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
                                     </button>
                                     <input type="file" id="upload-img" onChange={handleImage} accept="image/*,image/heif,image/heic"/>
                                 </div>
-                                    
-                                <div className="video-section">
-                                    {video.url ? 
-                                        (<>
-                                            <video src={video.url} controls />
-                                            {progress > 0 && progress < 100 &&
-                                                <progress value={progress} max="100">{progress}</progress>
-                                            }
-                                        </>)
-                                    :
-                                    singleItem?.video ? 
-                                        (<div className="video-wrapper">
-                                            <img
-                                                src="./thumbnail.jpg"
-                                                alt="video thumbnail"
-                                                style={{ display: !isPlaying ? "" : "none", cursor: "pointer" }}
-                                                onClick={handlePlay}
-                                            />
-                                            <video
-                                                ref={videoRef}
-                                                src={singleItem.video}
-                                                onClick={handlePlay}
-                                                style={{ display: isPlaying ? "" : "none" }}
-                                                controls
-                                                onEnded={handleVideoEnded}
-                                            />
-                                        </div>)
-                                    :
-                                    (<label htmlFor="upload-video" title="Upload a video">
-                                        <img src="./uploadImg.jpg" className="default-img" alt="upload" />
-                                    </label>)
-                                    }
-                                    <button onClick={() => document.getElementById("upload-video").click()}>
-                                        {(singleItem?.video || video.url) ? "Upload another video" : "Upload video"}
-                                    </button>
-                                    <input type="file" id="upload-video" onChange={handleVideo} accept="video/*,video/mp4,video/x-m4v,video/x-matroska,.mkv"/>
-                                </div> 
                             </div>
                         :
                             singleItem?.video ?
-                                <div className={`${authenticated ? "video-wrapper" : "auth-video-wrapper"}`}>
-                                    <img src="./thumbnail.jpg" alt="" style={{display: !isPlaying ? "" : "none"}} onClick={handlePlay} />
-                                    <video ref={videoRef} 
-                                            src={singleItem.video} 
-                                            onClick={handlePlay} 
-                                            style={{display: isPlaying ? "" : "none"}} 
-                                            controls
-                                            onEnded={handleVideoEnded}>   
-                                    </video>
-                                </div> 
+                                <>
+                                    <div className="video-wrapper">
+                                        <iframe
+                                            className="frame"
+                                            src={getEmbedUrl(singleItem.video) + "?rel=0"}
+                                            title="Project video"
+                                            allowFullScreen
+                                        />
+                                        <div className="iframe-overlay"></div>
+                                    </div>
+                                </>
                             :
                             singleItem?.image &&
                                 <img className="image" src={singleItem.image} />
@@ -203,6 +152,7 @@ const Item = ({openItem, setOpenItem, authenticated, singleItem, setSingleItem})
 
                                 <textarea placeholder="Add a short text about this project..." required defaultValue={singleItem?.bio} ref={bio}></textarea>
 
+                                <input type="text" placeholder="Youtube video link" defaultValue={singleItem?.video} ref={videoLinkInput}/>
                                 <input type="text" placeholder="Internet link" defaultValue={singleItem?.internetLink} ref={internetLink}/>
                                 <input type="text" placeholder="Srouce code link" required defaultValue={singleItem?.sourceCodeLink} ref={sourceCodeLink}/>
 
